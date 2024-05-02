@@ -12,6 +12,7 @@ const ItemCard = ({ data }: any) => {
           width={120}
           src={data.icon_url}
           alt="ポイントが貯まる・使える"
+          style={{ width: '100%', height: 'auto' }}
         />
       </div>
       <div className={styles["item__section--card-text"]}>

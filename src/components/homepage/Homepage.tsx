@@ -1,3 +1,4 @@
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./homepage.module.css";
@@ -219,8 +220,8 @@ const member_item_lists = [
 export default function HomePage() {
   return (
     <div className="font-NotoSans">
-      <section className="h-[500px]">Section1</section>
-      <section className={styles["step__section"]}>
+      <div className="h-[500px]">Section1</div>
+      <div className={styles["step__section"]}>
         <div className={styles["container-lg"]}>
           <h2 className={styles["section2__header"]}>
             かんたん<span className="text-yellow-400">3ステップ</span>
@@ -253,10 +254,11 @@ export default function HomePage() {
               <p>プロフィール画像と自己紹介を登録しましょう。</p>
               <div className={styles["profile__image"]}>
                 <Image
-                  height={150}
-                  width={200}
+                  style={{ width: '100%', height: 'auto' }}
+                  height={0}
+                  width={0}
                   src="/assets/front/image/homepage/profile.svg"
-                  alt=""
+                  alt="profile"
                 />
               </div>
               <div className={styles["setp__number"]}>02</div>
@@ -270,6 +272,7 @@ export default function HomePage() {
                 <li>
                   <div className={styles["setp__procress-image"]}>
                     <Image
+                      style={{ width: '100%', height: 'auto' }}
                       height={80}
                       width={66}
                       src="/assets/front/image/homepage/article.svg"
@@ -282,6 +285,7 @@ export default function HomePage() {
                 <li>
                   <div className={styles["setp__procress-image"]}>
                     <Image
+                      style={{ width: '100%', height: 'auto' }}
                       height={50}
                       width={50}
                       src="/assets/front/image/homepage/setting.svg"
@@ -297,6 +301,7 @@ export default function HomePage() {
                 <li>
                   <div className={styles["setp__procress-image"]}>
                     <Image
+                      style={{ width: '100%', height: 'auto' }}
                       height={50}
                       width={50}
                       src="/assets/front/image/homepage/release.svg"
@@ -321,8 +326,8 @@ export default function HomePage() {
             </li>
           </ol>
         </div>
-      </section>
-      <section className={styles["cost__section"]}>
+      </div>
+      <div className={styles["cost__section"]}>
         <div className={styles["container-lg"]}>
           <h2>売上代金のお支払い</h2>
           <div className="flex gap-4">
@@ -363,24 +368,26 @@ export default function HomePage() {
             </small>
           </p>
         </div>
-      </section>
-      <section className={styles["service__section"]}>
+      </div>
+      <div className={styles["service__section"]}>
         <div className={styles["container-lg"]}>
           <p className={styles["service__section-header"]}>SERVICE</p>
           <div className={styles["service__section-dog"]}>
             <Image
+              style={{ width: '100%', height: 'auto' }}
               height={500}
               width={500}
               src="/assets/front/image/homepage/dog.svg"
-              alt=""
+              alt="dog"
             />
           </div>
           <div className={styles["service__section-boy"]}>
             <Image
+              style={{ width: '100%', height: 'auto' }}
               height={500}
               width={500}
               src="/assets/front/image/homepage/boy01.svg"
-              alt=""
+              alt="boy01"
             />
           </div>
           <h2>
@@ -395,18 +402,19 @@ export default function HomePage() {
             <Link href="https://tips.jp/register">無料で会員登録する</Link>
           </div>
         </div>
-      </section>
-      <section className={styles["member__section"]}>
+      </div>
+      <div className={styles["member__section"]}>
         <div className={styles["container-lg"]}>
           <span className={styles["member__section-header"]}>
             + PLUS MEMBER
           </span>
           <div className={styles["member__section-girl"]}>
             <Image
+              style={{ width: '100%', height: 'auto' }}
               height={50}
               width={50}
               src="/assets/front/image/homepage/girl01.svg"
-              alt=""
+              alt="section-girl"
             />
           </div>
           <h2>
@@ -430,67 +438,77 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        <section className="ban">
-          <div className="container-lg">
-            <h2>禁止事項</h2>
-            <div className="bg-white p-4 pt-5 mt-0">
-              <ul className="pl-4">
-                <li>
-                  違法性の疑いがある、もしくはモラルに著しく欠ける内容の掲載
-                </li>
-                <li>外部有料コンテンツへの誘導が目的の内容の掲載</li>
-                <li>アダルトコンテンツの掲載</li>
-                <li>
-                  外部ASPを使ったアフィリエイトリンクの掲載
-                  <div className="lh-1">
-                    <small>
-                      ※過去、外部ASPのアフィリエイトリンク掲載を許可していた期間中に、Tipsプラスを登録いただいたユーザー様については、現在も一部掲載可能としておりますが、それ以外の方については掲載禁止となっております。また再開の予定はございません。
-                    </small>
-                  </div>
-                </li>
-              </ul>
-              <div className="pl-4 pr-4 mt-4">
-                その他の禁止事項については、
-                <a
-                  href="https://tips.jp/u/tipsinfo/a/4woqmWNB"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary"
-                >
-                  記事公開におけるガイドライン
-                </a>
-                や
-                <a
-                  href="https://tips.jp/u/tipsinfo/a/affiliate-guideline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary"
-                >
-                  Tipsアフィリエイトガイドライン
-                </a>
-                、
-                <a
-                  href="https://tips.jp/terms"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary"
-                >
-                  利用規約
-                </a>
-                をご確認ください。
-              </div>
+      </div>
+      <div className={styles["ban__section"]}>
+        <div className={styles["container-lg"]}>
+          <h2>禁止事項</h2>
+          <div className="bg-white p-4 pt-5 mt-0">
+            <ul className="pl-4">
+              <li>
+                違法性の疑いがある、もしくはモラルに著しく欠ける内容の掲載
+              </li>
+              <li>外部有料コンテンツへの誘導が目的の内容の掲載</li>
+              <li>アダルトコンテンツの掲載</li>
+              <li>
+                外部ASPを使ったアフィリエイトリンクの掲載
+                <div className="lh-1">
+                  <small>
+                    ※過去、外部ASPのアフィリエイトリンク掲載を許可していた期間中に、Tipsプラスを登録いただいたユーザー様については、現在も一部掲載可能としておりますが、それ以外の方については掲載禁止となっております。また再開の予定はございません。
+                  </small>
+                </div>
+              </li>
+            </ul>
+            <div className="pl-4 pr-4 mt-4">
+              その他の禁止事項については、
+              <a
+                href="https://tips.jp/u/tipsinfo/a/4woqmWNB"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-yellow-400"
+              >
+                記事公開におけるガイドライン
+              </a>
+              や
+              <a
+                href="https://tips.jp/u/tipsinfo/a/affiliate-guideline"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-yellow-400"
+              >
+                Tipsアフィリエイトガイドライン
+              </a>
+              、
+              <a
+                href="https://tips.jp/terms"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-yellow-400"
+              >
+                利用規約
+              </a>
+              をご確認ください。
             </div>
           </div>
-        </section>
-      </section>
-      {/* <section className="landing-section letstart">
-  <div className="container-lg">
-      <p>まずははじめてみよう</p>
-      <p>無料会員登録ですぐに記事を書きはじめることができます。</p>
-      <span className="illust mainvisual"><Image height={50} width={50} height={40} width={40} className="ovj ovj-contain" src="/assets/front/image/homepage/main_illustration.svg" alt="Tipsなら、無料ですぐに記事の販売をはじめることができます" /></span />
-      <a href="https://tips.jp/register" className="btn btn-primary grd-primary btn-lg btn-pill btn-block">無料で会員登録する<i className="ic ic-down"></i></a>
-  </div>
-</section> */}
+        </div>
+      </div>
+      <div className={styles["letstart__section"]}>
+        <div className={styles["container-lg"]}>
+          <h2>まずははじめてみよう</h2>
+          <p>無料会員登録ですぐに記事を書きはじめることができます。</p>
+          <div className={styles["letstart__section-let-register"]}>
+            <Image
+              style={{ width: '100%', height: 'auto' }}
+              height={500}
+              width={500}
+              src="/assets/front/image/homepage/main_illustration.svg"
+              alt="Tipsなら、無料ですぐに記事の販売をはじめることができます"
+            />
+          </div>
+          <div className={styles["letstart__section-let-register-btn"]}>
+                <Link href="https://tips.jp/register">無料で会員登録する</Link>
+              </div>
+        </div>
+      </div>
     </div>
   );
 }
