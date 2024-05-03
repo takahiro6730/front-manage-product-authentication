@@ -328,3 +328,78 @@
     </div>
   </div>
 </div>;
+
+
+
+<div className="dddd">
+        <div className="container-lg">
+          {/* <div className={styles["header__logo"]}>
+            <Link className="navbar-brand" href="https://tips.jp" title="Tips">
+              <div>LOGO</div>
+            </Link>
+          </div> */}
+          {/* <div className="d-flex ml-lg-auto">
+            <div className="navbar-nav  notlogin ">
+              <ul id="menu-mainmenu" className="nav align-items-center">
+                <li className="menu-item d-flex align-items-center">
+                  <div className="sp-search">
+                    <form
+                      method="GET"
+                      action="https://tips.jp/search"
+                      accept-charset="UTF-8"
+                    >
+                      <div className="input-group input-group-sm">
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="keyword"
+                          value=""
+                          placeholder="すべてのカテゴリから探す"
+                          aria-label=""
+                          aria-describedby="button-addon2"
+                        />
+                        <div className="input-group-append">
+                          <button
+                            className="btn btn-outline-silver"
+                            type="submit"
+                            id="button-addon"
+                          >
+                            <i className="ic ic-search"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <a
+                    href="https://tips.jp/login"
+                    role="button"
+                    className="btn btn-link"
+                  >
+                    ログイン
+                  </a>
+                  <a
+                    href="https://tips.jp/register"
+                    role="button"
+                    className="btn btn-primary"
+                  >
+                    新規登録
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div> */}
+        </div>
+      </div>
+      {/* <div>
+        <div className="d-flex container-lg">
+          <a className="nav-link " href="https://tips.jp">
+            ホーム
+          </a>
+          <a className="nav-link " href="https://tips.jp/category">
+            カテゴリ
+          </a>
+          <a className="nav-link " href="https://tips.jp/tags">
+            タグ一覧
+          </a>
+        </div>
+      </div> */}
