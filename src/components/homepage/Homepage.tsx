@@ -239,7 +239,7 @@ export default function HomePage() {
                 まずはニックネーム・メールアドレス・パスワードを登録しましょう。
               </p>
               <div className={styles["register__btn"]}>
-                <Link href="https://tips.jp/register">無料で会員登録する</Link>
+                <Link href="/register">無料で会員登録する</Link>
               </div>
               <div className={styles["setp__number"]}>01</div>
             </li>
@@ -317,7 +317,7 @@ export default function HomePage() {
               </ol>
               <div className="flex justify-center mt-10">
                 <div className={styles["setp__link_btn"]}>
-                  <Link href="https://tips.jp/search">
+                  <Link href="/search">
                     投稿された記事を見てみる
                   </Link>
                 </div>
@@ -399,7 +399,7 @@ export default function HomePage() {
             ))}
           </div>
           <div className={styles["register__btn"]}>
-            <Link href="https://tips.jp/register">無料で会員登録する</Link>
+            <Link href="/register">無料で会員登録する</Link>
           </div>
         </div>
       </div>
@@ -429,12 +429,12 @@ export default function HomePage() {
 
           <div className={styles["member__section--link-buttons"]}>
             <div className={styles["member__section--left-btn"]}>
-              <Link href="https://tips.jp/search">
+              <Link href="/search">
                 投稿された記事を見てみる
               </Link>
             </div>
             <div className={styles["member__section--right-btn"]}>
-              <Link href="https://tips.jp/plus">プラス会員に申し込む</Link>
+              <Link href="/plus">プラス会員に申し込む</Link>
             </div>
           </div>
         </div>
@@ -461,7 +461,7 @@ export default function HomePage() {
             <div className="pl-4 pr-4 mt-4">
               その他の禁止事項については、
               <a
-                href="https://tips.jp/u/tipsinfo/a/4woqmWNB"
+                href="/u/tipsinfo/a/4woqmWNB"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-yellow-400"
@@ -470,7 +470,7 @@ export default function HomePage() {
               </a>
               や
               <a
-                href="https://tips.jp/u/tipsinfo/a/affiliate-guideline"
+                href="/u/tipsinfo/a/affiliate-guideline"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-yellow-400"
@@ -479,7 +479,7 @@ export default function HomePage() {
               </a>
               、
               <a
-                href="https://tips.jp/terms"
+                href="/terms"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-yellow-400"
@@ -505,7 +505,7 @@ export default function HomePage() {
             />
           </div>
           <div className={styles["letstart__section-let-register-btn"]}>
-                <Link href="https://tips.jp/register">無料で会員登録する</Link>
+                <Link href="/register">無料で会員登録する</Link>
               </div>
         </div>
       </div>
