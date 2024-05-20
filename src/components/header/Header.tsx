@@ -4,12 +4,12 @@ import styles from "./header.module.css";
 
 const Header = () => {
   return (
-    <header className={styles["header"]}>
+    <div className={styles["header"]}>
       <div className={styles["top-bar"]}>
         <div className={styles["container-lg"]}>
           <div className={styles["header__logo"]}>
-            <Link className="navbar-brand" href="https://tips.jp" title="Tips">
-              <div>LOGO</div>
+            <Link className="navbar-brand" href="/">
+              LOGO
             </Link>
           </div>
           <div className={styles["user-bar"]}>
@@ -20,7 +20,6 @@ const Header = () => {
                     type="text"
                     className={styles["search-input-field"]}
                     name="keyword"
-                    value=""
                     placeholder="すべてのカテゴリから探す"
                   />
                 </div>
@@ -35,7 +34,7 @@ const Header = () => {
                 </Link>
                 <Link
                   className={styles["user-register"]}
-                  href="https://tips.jp/register"
+                  href="/register"
                   title="Tips"
                 >
                   <div>新規登録</div>
@@ -46,31 +45,31 @@ const Header = () => {
         </div>
       </div>
       <div className={styles["link-group"]}>
-               <div className={styles["link-bar"]}>
+        <div className={styles["link-bar"]}>
           <Link
             className={styles["link-items"]}
-            href="https://tips.jp"
+            href="/"
             title="Tips"
           >
             <div>ホーム</div>
           </Link>
           <Link
             className={styles["link-items"]}
-            href="https://tips.jp/category"
+            href="/category"
             title="Tips"
           >
             <div>カテゴリ</div>
           </Link>
           <Link
             className={styles["link-items"]}
-            href="https://tips.jp/tags"
+            href="/tags"
             title="Tips"
           >
             <div>タグ一覧</div>
           </Link>
         </div>
       </div>
-    </header>
+    </div>
   );
 };
 
