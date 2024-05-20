@@ -1,10 +1,8 @@
 "use client";
-import React, { useState } from "react";
-import { Checkbox } from "@nextui-org/react";
-import MainSwiper from "./MainSwiper";
-import { HeartIcon } from './HeartIcon'; 
-import styles from "./main.module.css";
 import Image from "next/image";
+import HeartCheckbox from "./HeartCheck";
+import styles from "./main.module.css";
+import MainSwiper from "./MainSwiper";
 
 const recommended_cards = [
     {
@@ -106,13 +104,12 @@ const recommended_cards = [
 ]
 
 
-const Main = () => {
-    const [filled, setFilled] = useState<boolean>(false);
 
-    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFilled(event.target.checked);
-        console.log(filled);
-      };
+const Main = () => {
+
+    const handleCheckboxChange = (id: number, val: boolean) => {
+        console.log("HearCheck Event : ", id, val)
+    };
 
 
     return (
@@ -122,40 +119,135 @@ const Main = () => {
                 <div className={styles["container-lg"]}>
                     <h1 className={styles["container--h1"]}>注目記事</h1>
                     <div className={styles["card-section"]}>
-                    {recommended_cards.map((item: any, index: number)=>(
-                        <div className={styles["card-item"]}>
-                            <div className={styles["card-item-top"]}>
-                                <div className={styles["card-item-top-img"]}>
-                                    <Image src={item.image} height={100} width={150} alt={item.category} />
+                        {recommended_cards.map((item: any, index: number) => (
+                            <div className={styles["card-item"]} key={index}>
+                                <div className={styles["card-item-top"]}>
+                                    <div className={styles["card-item-top-img"]}>
+                                        <Image src={item.image} height={100} width={150} alt={item.category} />
+                                    </div>
+                                    <div className={styles["card-item-top-category"]}>
+                                        {item.category}
+                                    </div>
+                                    <div className={styles["card-item-top-like"]}>
+                                        <HeartCheckbox onChange={(val) => handleCheckboxChange(item.id, val)} />
+                                    </div>
                                 </div>
-                                <div className={styles["card-item-top-category"]}>
-                                    {item.category}
-                                </div>
-                                <div className={styles["card-item-top-like"]}>
-                                    <Checkbox defaultSelected id={'like_check' + index.toString()} icon={<HeartIcon filled={filled} size={24} height={24} width={24} label="Heart"/>}  onChange={handleCheckboxChange} ></Checkbox>
+                                <div className={styles["card-item-bottom"]}>
+                                    <div className={styles["card-item-bottom-title"]}>
+                                        {item.title}
+                                    </div>
+                                    <div className={styles["card-item-bottom-clap"]}>
+                                        <div>
+                                            <Image src="/assets/front/image/mainpage/clap.svg" alt="clap-svg" width={500} height={500} />
+                                        </div>
+                                        <div>
+                                            {item.clap}
+                                        </div>
+                                    </div>
+                                    <div className={styles["card-item-bottom-user"]}>
+                                        <div className={styles["card-item-bottom-user-avatar"]}>
+                                            <Image src={item.user_avatar} alt="avatar-0098" width={500} height={500} />
+                                        </div>
+                                        <div>
+                                            <div className={styles["card-item-bottom-user-name"]}>
+                                                {item.user_name}
+                                            </div>
+                                            <div className={styles["card-item-bottom-user-access"]}>
+                                                {item.user_access}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className={styles["card-item-bottom"]}>
-                                <div className={styles["card-item-bottom-title"]}>
-
-                                </div>
-                                <div className={styles["card-item-bottom-clap"]}>
-
-                                </div>
-                                <div className={styles["card-item-bottom-user"]}>
-                                    <div className={styles["card-item-bottom-user-avatar"]}>
-
+                        ))}
+                    </div>
+                    <h1 className={styles["container--h1"]}>注目記事</h1>
+                    <div className={styles["card-section"]}>
+                        {recommended_cards.map((item: any, index: number) => (
+                            <div className={styles["card-item"]} key={index}>
+                                <div className={styles["card-item-top"]}>
+                                    <div className={styles["card-item-top-img"]}>
+                                        <Image src={item.image} height={100} width={150} alt={item.category} />
                                     </div>
-                                    <div className={styles["card-item-bottom-user-name"]}>
-                                        
+                                    <div className={styles["card-item-top-category"]}>
+                                        {item.category}
                                     </div>
-                                    <div className={styles["card-item-bottom-user-access"]}>
-                                    
+                                    <div className={styles["card-item-top-like"]}>
+                                        <HeartCheckbox onChange={(val) => handleCheckboxChange(item.id, val)} />
+                                    </div>
+                                </div>
+                                <div className={styles["card-item-bottom"]}>
+                                    <div className={styles["card-item-bottom-title"]}>
+                                        {item.title}
+                                    </div>
+                                    <div className={styles["card-item-bottom-clap"]}>
+                                        <div>
+                                            <Image src="/assets/front/image/mainpage/clap.svg" alt="clap-svg" width={500} height={500} />
+                                        </div>
+                                        <div>
+                                            {item.clap}
+                                        </div>
+                                    </div>
+                                    <div className={styles["card-item-bottom-user"]}>
+                                        <div className={styles["card-item-bottom-user-avatar"]}>
+                                            <Image src={item.user_avatar} alt="avatar-0098" width={500} height={500} />
+                                        </div>
+                                        <div>
+                                            <div className={styles["card-item-bottom-user-name"]}>
+                                                {item.user_name}
+                                            </div>
+                                            <div className={styles["card-item-bottom-user-access"]}>
+                                                {item.user_access}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+                    <h1 className={styles["container--h1"]}>注目記事</h1>
+                    <div className={styles["card-section"]}>
+                        {recommended_cards.map((item: any, index: number) => (
+                            <div className={styles["card-item"]} key={index}>
+                                <div className={styles["card-item-top"]}>
+                                    <div className={styles["card-item-top-img"]}>
+                                        <Image src={item.image} height={100} width={150} alt={item.category} />
+                                    </div>
+                                    <div className={styles["card-item-top-category"]}>
+                                        {item.category}
+                                    </div>
+                                    <div className={styles["card-item-top-like"]}>
+                                        <HeartCheckbox onChange={(val) => handleCheckboxChange(item.id, val)} />
+                                    </div>
+                                </div>
+                                <div className={styles["card-item-bottom"]}>
+                                    <div className={styles["card-item-bottom-title"]}>
+                                        {item.title}
+                                    </div>
+                                    <div className={styles["card-item-bottom-clap"]}>
+                                        <div>
+                                            <Image src="/assets/front/image/mainpage/clap.svg" alt="clap-svg" width={500} height={500} />
+                                        </div>
+                                        <div>
+                                            {item.clap}
+                                        </div>
+                                    </div>
+                                    <div className={styles["card-item-bottom-user"]}>
+                                        <div className={styles["card-item-bottom-user-avatar"]}>
+                                            <Image src={item.user_avatar} alt="avatar-0098" width={500} height={500} />
+                                        </div>
+                                        <div>
+                                            <div className={styles["card-item-bottom-user-name"]}>
+                                                {item.user_name}
+                                            </div>
+                                            <div className={styles["card-item-bottom-user-access"]}>
+                                                {item.user_access}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

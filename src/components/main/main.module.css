@@ -24,7 +24,7 @@
 
 .card-item {
     width: 23%;
-    height: 280px;
+    height: 300px;
     border-radius: 6px;
     border: 1px solid rgba(0,0,0,0.5);
     background-color: white;
@@ -61,5 +61,40 @@
     border-radius: 50%;
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+.card-item-bottom {
+    padding: 10px 20px;
+}
+
+.card-item-bottom-title {
+    font-weight: 700;
+    font-size: 14px;
+}
+.card-item-bottom-clap {
+    padding: 8px;
+    display: flex;
+    gap: 10px;
+}
+
+.card-item-bottom-clap img {
+    width: 20px;
+    height: 20px;
+}
+
+.card-item-bottom-user-avatar {
+    border-radius: 50%;
+}
+
+.card-item-bottom-user-avatar img {
+    width: 30px;
+    height: auto;
+    border-radius: 50%;
+}
+
+.card-item-bottom-user {
+    display: flex;
+    gap: 10px;
     align-items: center;
 }
