@@ -7,16 +7,16 @@ import styles from './blog.module.css';
 import { Range } from 'react-range';
 import Modal from "./Modal";
 
-
-const ThumbnailBox = () => {
-    const [imageSrc, setImageSrc] = useState(null);
+const ThumbnailBox: React.FC = () => {
+    const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
-    const [zoom, setZoom] = useState(1);
-    const [showModal, setShowModal] = useState(false);
-    const [croppedImage, setCroppedImage] = useState(null);
-    const crop_size = { width: 560, height: 300 }
+    const [zoom, setZoom] = useState<number>(1);
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [croppedImage, setCroppedImage] = useState<string | null>(null);
+    const cropSize = { width: 560, height: 300 };
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
 
-    const onDrop = useCallback(async (acceptedFiles: any) => {
+    const onDrop = useCallback(async (acceptedFiles: File[]) => {
         const file = acceptedFiles[0];
 
         // Options for image compression
@@ -36,7 +36,7 @@ const ThumbnailBox = () => {
                 setImageSrc(e.target.result);
             };
             reader.readAsDataURL(compressedFile);
-            setShowModal(true)
+            setShowModal(true);
         } catch (error) {
             console.error('Error compressing file:', error);
         }
@@ -48,107 +48,105 @@ const ThumbnailBox = () => {
         setZoom(value[0]);
     };
 
-    const onCropComplete = useCallback(async (croppedArea: Area, croppedAreaPixels: Area) => {
-        // console.log("0000000000000000cropCompleate")
-        // const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
-        // console.log(croppedImage)
-        // // setCroppedImage(croppedImage);
-        if (!imageSrc) {
-            console.error('Image source is not loaded');
-            return;
-          }
-      
-          try {
-            const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
-            // setCroppedImage(croppedImage);
-          } catch (error) {
-            console.error('Error cropping image:', error);
-          }
-    }, [imageSrc]);
+    const onCropComplete = useCallback((croppedArea: Area, croppedAreaPixels: Area) => {
+        setCroppedAreaPixels(croppedAreaPixels);
+    }, []);
 
-    const getCroppedImg = (imageSrc: any, crop: any) => {
-        return new Promise((resolve, reject) => {
-          const image = new Image();
-          image.src = imageSrc;
-          image.crossOrigin = 'anonymous'; // To avoid CORS issues
-    
-          image.onload = () => {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-    
-            if (!ctx) {
-              reject(new Error('Canvas context is not available'));
-              return;
-            }
-    
-            canvas.width = crop.width;
-            canvas.height = crop.height;
-    
-            ctx.drawImage(
-              image,
-              crop.x,
-              crop.y,
-              crop.width,
-              crop.height,
-              0,
-              0,
-              crop.width,
-              crop.height
-            );
-            console.log(ctx);
-            console.log(canvas);
-    
-            canvas.toBlob((blob) => {
-                console.log(blob)
-              if (blob) {
-                const url = URL.createObjectURL(blob);
-                resolve(url);
-              } else {
-                reject(new Error('Canvas is empty'));
-              }
-            }, 'image/jpeg');
-          };
-    
-          image.onerror = (error) => reject(error);
+    const createImage = (url: string): Promise<HTMLImageElement> =>
+        new Promise((resolve, reject) => {
+            const image = new Image();
+            image.src = url;
+            image.crossOrigin = 'anonymous';
+            image.onload = () => resolve(image);
+            image.onerror = (error) => reject(error);
         });
-      };
+
+    const getCroppedImg = async (imageSrc: string, crop: Area): Promise<string> => {
+        const image = await createImage(imageSrc);
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        if (!ctx) {
+            throw new Error('Canvas context is not available');
+        }
+
+        canvas.width = crop.width;
+        canvas.height = crop.height;
+
+        ctx.drawImage(
+            image,
+            crop.x,
+            crop.y,
+            crop.width,
+            crop.height,
+            0,
+            0,
+            crop.width,
+            crop.height
+        );
+
+        return new Promise<string>((resolve, reject) => {
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    const url = URL.createObjectURL(blob);
+                    resolve(url);
+                } else {
+                    reject(new Error('Canvas is empty'));
+                }
+            }, 'image/jpeg');
+        });
+    };
+
+    const showCroppedImage = async () => {
+        try {
+            if (!imageSrc || !croppedAreaPixels) return;
+            const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
+            console.log('Cropped Image:', croppedImage);
+            setCroppedImage(croppedImage);
+        } catch (error) {
+            console.error('Error cropping image:', error);
+        }
+    };
 
     return (
         <div className="App">
-            <div className={styles["dropzone"]} {...getRootProps()}>
-                <input {...getInputProps()} />
-                <div className={styles["dropify-form-group"]} id="dropify_image_path">
-                    <div className={styles["dropify-wrapper"]}>
-                        <div className="dropify-message">
-                            <p>画像をアップロード(推奨サイズ:720×378px以上)</p>
+            {(croppedImage) ? (
+                <div className={styles.dropzone} {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <img src={croppedImage} alt="Cropped" className={styles.previewImage} />
+                </div>
+            ) :
+                (
+                    <div className={styles.dropzone} {...getRootProps()}>
+                        <input {...getInputProps()} />
+                        <div className={styles["dropify-form-group"]} id="dropify_image_path">
+                            <div className={styles["dropify-wrapper"]}>
+                                <div className="dropify-message">
+                                    <p>画像をアップロード(推奨サイズ:720×378px以上)</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            {croppedImage && (
-        <div className={styles["previewContainer"]}>
-          <h3>Preview</h3>
-          <img src={croppedImage} alt="Cropped" className={styles["previewImage"]} />
-        </div>
-      )}
+                )}
             <div>
-                {showModal &&
-                    <Modal onClose={() => setShowModal(false)} onConfirm={() => onCropComplete(crop as Area, crop as Area)}>
+                {showModal && (
+                    <Modal onClose={() => setShowModal(false)} onConfirm={showCroppedImage}>
                         <div className={styles["crop-modal"]}>
                             {imageSrc && (
-                                <div className={styles["cropContainer"]}>
+                                <div className={styles.cropContainer}>
                                     <Cropper
                                         image={imageSrc}
                                         crop={crop}
                                         zoom={zoom}
                                         aspect={4 / 3}
                                         onCropChange={setCrop}
+                                        onCropComplete={onCropComplete}
                                         onZoomChange={setZoom}
-                                        cropSize={crop_size}
+                                        cropSize={cropSize}
                                     />
                                 </div>
                             )}
-                            <div className={styles["sliderContainer"]}>
+                            <div className={styles.sliderContainer}>
                                 <Range
                                     step={0.1}
                                     min={1}
@@ -171,7 +169,7 @@ const ThumbnailBox = () => {
                                     renderThumb={({ props }) => (
                                         <div
                                             {...props}
-                                            key={'range'}
+                                            key="range"
                                             style={{
                                                 ...props.style,
                                                 height: '20px',
@@ -186,9 +184,8 @@ const ThumbnailBox = () => {
                             </div>
                         </div>
                     </Modal>
-                }
+                )}
             </div>
-
         </div>
     );
 };
