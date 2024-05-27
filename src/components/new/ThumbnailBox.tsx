@@ -7,7 +7,7 @@ import styles from './blog.module.css';
 import { Range } from 'react-range';
 import Modal from "./Modal";
 
-const ThumbnailBox: React.FC = () => {
+const ThumbnailBox = ({jsonData, setJsonData}: any) => {
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
     const [zoom, setZoom] = useState<number>(1);
@@ -19,7 +19,6 @@ const ThumbnailBox: React.FC = () => {
     const onDrop = useCallback(async (acceptedFiles: File[]) => {
         const file = acceptedFiles[0];
 
-        // Options for image compression
         const options = {
             maxSizeMB: 1,
             maxWidthOrHeight: 1200,
@@ -28,9 +27,7 @@ const ThumbnailBox: React.FC = () => {
 
         try {
             const compressedFile = await imageCompression(file, options);
-            console.log('Compressed File:', compressedFile);
 
-            // Read the compressed file and convert it to a data URL
             const reader = new FileReader();
             reader.onload = (e: any) => {
                 setImageSrc(e.target.result);
@@ -101,8 +98,9 @@ const ThumbnailBox: React.FC = () => {
         try {
             if (!imageSrc || !croppedAreaPixels) return;
             const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
-            console.log('Cropped Image:', croppedImage);
-            setCroppedImage(croppedImage);
+            setShowModal(false);
+            await setCroppedImage(croppedImage);
+            setJsonData({ ...jsonData, thumbnailImage: imageSrc });
         } catch (error) {
             console.error('Error cropping image:', error);
         }

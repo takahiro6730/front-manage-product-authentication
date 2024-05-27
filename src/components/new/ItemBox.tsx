@@ -1,38 +1,46 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import styles from "./itemgroup.module.css";
+
 import TextItem from "./items/TextItem";
 import HeaderItem from "./items/HeaderItem";
 import ImageItem from "./items/ImageItem";
-import styles from "./itemgroup.module.css";
+import TableItem from "./items/TableItem";
+import LinkItem from "./items/LinkItem";
+import AttachItem from "./items/AttachItem";
+import ListItem from "./items/ListItem";
 
 
-export type CompType = 'TEXT' | 'IMAGE' | 'TABLE' | 'LIST' | 'HEADER';
+export type CompType = 'TEXT' | 'IMAGE' | 'TABLE' | 'LIST' | 'HEADER' | 'LINK' | 'ATTACH';
 
 const plus_area = [
     { svg: "text.svg", text: "文章", type: "TEXT" },
     { svg: "header.svg", text: "見出し", type: "HEADER" },
     { svg: "list.svg", text: "リスト", type: "LIST" },
-    { svg: "quote.svg", text: "引用", type: "QUOTE" },
-    { svg: "code.svg", text: "コード", type: "CODE" },
+    // { svg: "quote.svg", text: "引用", type: "QUOTE" },
+    // { svg: "code.svg", text: "コード", type: "CODE" },
     { svg: "table.svg", text: "テーブル", type: "TABLE" },
     { svg: "image.svg", text: "画像", type: "IMAGE" },
     { svg: "attach.svg", text: "ファイル", type: "ATTACH" },
     { svg: "link.svg", text: "リンクカード", type: "LINK" },
-    { svg: "payline.svg", text: "有料エリア境界線", type: "PAYLINE" },
+    // { svg: "payline.svg", text: "有料エリア境界線", type: "PAYLINE" },
 ];
 
 interface Item {
-    id: string;
+    id: String;
     type: CompType;
 }
 
 interface Props {
-    onClickNewItem: (newType: CompType) => void;
+    onClickNewItem: (newType: CompType, index: number) => void;
     onDeleteItem: () => void;
+    onClickUpItem: (index: number) => void;
+    onClickDownItem: (index: number) => void;
     item: Item;
+    item_num: number;
 }
 
-const ItemBox = ({ onClickNewItem, onDeleteItem, item }: Props) => {
+const ItemBox = ({ onClickNewItem, onDeleteItem, onClickUpItem, onClickDownItem, item, item_num }: Props) => {
     const [addItemShow, setAddItemShow] = useState<boolean>(false);
     const addItemBoxRef = useRef<HTMLDivElement>(null);
     const [editItemShow, setEditItemShow] = useState<boolean>(false);
@@ -78,10 +86,18 @@ const ItemBox = ({ onClickNewItem, onDeleteItem, item }: Props) => {
         };
     }, [editItemShow]);
 
-    const addNewItem = (type: CompType) => () => {
-        onClickNewItem(type);
+    const addNewItem = (type: CompType, index: number) => () => {
+        onClickNewItem(type, index);
         setAddItemShow(false);
     };
+
+    const clickDownItem = (item_num: number) => () => {
+        onClickDownItem(item_num)
+    }
+
+    const clickUpItem = (item_num: number) => () => {
+        onClickUpItem(item_num)
+    }
 
     return (
         <div className="relative">
@@ -93,12 +109,12 @@ const ItemBox = ({ onClickNewItem, onDeleteItem, item }: Props) => {
                     {addItemShow && (
                         <div className={styles["item-group__box"]} ref={addItemBoxRef}>
                             <div className={styles["popover-items"]}>
-                                {plus_area.map((item, index) => (
-                                    <div className={styles["popover-item"]} data-type={item.type} key={index} onClick={addNewItem(item.type as CompType)}>
+                                {plus_area.map((area, index) => (
+                                    <div className={styles["popover-item"]} data-type={area.type} key={index} onClick={addNewItem(area.type as CompType, item_num as number)}>
                                         <div className={styles["popover-item__icon"]}>
-                                            <Image src={`/assets/front/image/newBlog/icons/${item.svg}`} alt="textsvg" width={24} height={24} />
+                                            <Image src={`/assets/front/image/newBlog/icons/${area.svg}`} alt="textsvg" width={24} height={24} />
                                         </div>
-                                        <div className={styles["popover-item__title"]}>{item.text}</div>
+                                        <div className={styles["popover-item__title"]}>{area.text}</div>
                                     </div>
                                 ))}
                             </div>
@@ -112,7 +128,7 @@ const ItemBox = ({ onClickNewItem, onDeleteItem, item }: Props) => {
                     {editItemShow && (
                         <div className={styles["item-group__box"]} ref={editItemBoxRef}>
                             <div className={styles["popover-items"]}>
-                                <div className={styles["popover-item"]} id="move-up">
+                                <div className={styles["popover-item"]} id="move-up" onClick={clickUpItem(item_num as number)}>
                                     <div className={styles["popover-item__icon"]}>
                                         <Image src="/assets/front/image/newBlog/icons/arrowUp.svg" alt="arrowUp" width={24} height={24} />
                                     </div>
@@ -124,7 +140,7 @@ const ItemBox = ({ onClickNewItem, onDeleteItem, item }: Props) => {
                                     </div>
                                     <div className={styles["popover-item__title"]}>削除</div>
                                 </div>
-                                <div className={styles["popover-item"]} data-item-name="move-down">
+                                <div className={styles["popover-item"]} data-item-name="move-down" onClick={clickDownItem(item_num as number)}>
                                     <div className={styles["popover-item__icon"]}>
                                         <Image src="/assets/front/image/newBlog/icons/arrowDown.svg" alt="arrowDown" width={24} height={24} />
                                     </div>
@@ -135,10 +151,14 @@ const ItemBox = ({ onClickNewItem, onDeleteItem, item }: Props) => {
                     )}
                 </div>
             </div>
-            <div key={item.id}>
+            <div key={item.id.toString()}>
                 {item.type === 'TEXT' && <TextItem />}
                 {item.type === 'HEADER' && <HeaderItem />}
                 {item.type === 'IMAGE' && <ImageItem />}
+                {item.type === 'TABLE' && <TableItem />}
+                {item.type === 'LINK' && <LinkItem />}
+                {item.type === 'ATTACH' && <AttachItem />}
+                {item.type === 'LIST' && <ListItem />}
             </div>
         </div>
     );
