@@ -1,16 +1,15 @@
 "use client"
-import React, { useState } from "react";
+import React, { useState, createContext, useContext } from "react";
 import styles from "./blog.module.css"
 
 import ThumbnailBox from "./ThumbnailBox";
 import ItemGroup from "./ItemGroup";
 
-interface JsonData {
-    [key: string]: any;
-}
+import { useJsonData, JsonDataProvider } from './BlogJsonDataContext';
+
 
 export const NewBlog = () => {
-    const [jsonData, setJsonData] = useState<JsonData>();
+    const { jsonData, setJsonData } = useJsonData();
     const handlePublickClick = () => {
         console.log('pulbic--', jsonData);
     }
@@ -24,13 +23,13 @@ export const NewBlog = () => {
         <div className="w-full flex justify-center bg-white py-10 min-h-[800px]">
             <div className="w-full max-w-[980px]">
                 <div className={styles["thumbnail-area"]}>
-                    <ThumbnailBox jsonData={jsonData} setJsonData={setJsonData} />
+                    <ThumbnailBox />
                 </div>
                 <div className="w-full">
                     <input onChange={handleChangeTitle}
                         type="text" id="blog_title" className="bg-gray-50 border border-gray-300 text-gray-900 text-4xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 my-2 outline-none" placeholder="タイトルを入力" required />
                 </div>
-                <ItemGroup jsonData={jsonData} setJsonData={setJsonData} />
+                <ItemGroup />
                 <div className="flex justify-end font-NotoSans">
                     <button type="button" className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                         プレビュー
@@ -44,9 +43,14 @@ export const NewBlog = () => {
                     </button>
                 </div>
             </div>
-
         </div>
     );
 };
 
-export default NewBlog;
+const NewBlogWithProvider = () => (
+    <JsonDataProvider>
+        <NewBlog />
+    </JsonDataProvider>
+);
+
+export default NewBlogWithProvider;

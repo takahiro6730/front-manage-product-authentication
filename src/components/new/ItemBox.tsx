@@ -152,13 +152,13 @@ const ItemBox = ({ onClickNewItem, onDeleteItem, onClickUpItem, onClickDownItem,
                 </div>
             </div>
             <div key={item.id.toString()}>
-                {item.type === 'TEXT' && <TextItem />}
-                {item.type === 'HEADER' && <HeaderItem />}
-                {item.type === 'IMAGE' && <ImageItem />}
-                {item.type === 'TABLE' && <TableItem />}
-                {item.type === 'LINK' && <LinkItem />}
-                {item.type === 'ATTACH' && <AttachItem />}
-                {item.type === 'LIST' && <ListItem />}
+                {item.type === 'TEXT' && <TextItem item_id={item.id.toString()} />}
+                {item.type === 'HEADER' && <HeaderItem item_id={item.id.toString()} />}
+                {item.type === 'IMAGE' && <ImageItem item_id={item.id.toString()} />}
+                {item.type === 'TABLE' && <TableItem item_id={item.id.toString()} />}
+                {item.type === 'LINK' && <LinkItem item_id={item.id.toString()} />}
+                {item.type === 'ATTACH' && <AttachItem item_id={item.id.toString()} />}
+                {item.type === 'LIST' && <ListItem item_id={item.id.toString()} />}
             </div>
         </div>
     );
