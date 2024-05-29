@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { use, useState, useEffect } from "react";
 import ItemBox from "./ItemBox";
+
+import {useJsonData} from './BlogJsonDataContext';
+import { json } from "stream/consumers";
 
 export type CompType = 'TEXT' | 'IMAGE' | 'TABLE' | 'LIST' | 'HEADER' | 'LINK' | 'ATTACH';
 
@@ -8,41 +11,33 @@ interface Item {
     type: CompType;
 }
 
-interface JsonData {
-    setJsonData: () => void;
-    [key: string]: any;
-  }
-
-interface ItemGroupProps {
-    jsonData: JsonData;
-    setJsonData: (data: JsonData) => void;
-}
-
 interface ItemsData {
     [key: string]: any;
 }
-const ItemGroup = ({ jsonData, setJsonData }: ItemGroupProps) => {
 
-    const [itemsData, setItemsData] = useState<ItemsData>()
+const ItemGroup = () => {
+    const { jsonData, setJsonData } = useJsonData();
+    useEffect(() => {
+        setJsonData({...jsonData, itemsData: [{ id: "firstItem", type: 'TEXT', itemData: {} }]});
+      }, []);
 
-    const saveItems = () => {
-        setJsonData({...jsonData, itemsData: itemsData})
+    const saveItems = (updatedItems: ItemsData[]) => {
+        setJsonData({ ...jsonData, itemsData: updatedItems })
     }
-
-    const [items, setItems] = useState<Item[]>([{ id: "firstItem", type: 'TEXT' }]);
 
     const handleClickNewItem = (newType: CompType, index: number) => {
         const newItem = {
             id: Date.now().toString(),
-            type: newType
+            type: newType,
+            itemData: {}
         };
-        const updatedItems = [...items];
+
+        const updatedItems = [...jsonData?.itemsData];
         updatedItems.splice(index + 1, 0, newItem);
-        setItems(updatedItems);
-        saveItems()
+        saveItems(updatedItems);
     };
 
-    const swapElement = (arr: Item[], i: number, j: number) => {
+    const swapElement = (arr: any[], i: number, j: number) => {
         if (i < 0 || i >= arr.length || j < 0 || j >= arr.length) {
             console.log("Invalid index number");
             return;
@@ -51,32 +46,28 @@ const ItemGroup = ({ jsonData, setJsonData }: ItemGroupProps) => {
     }
 
     const handleClickUpItem = (index: number) => {
-
-        const updatedItems = [...items];
+        const updatedItems = [...jsonData?.itemsData];
         swapElement(updatedItems, index, index - 1);
-        setItems(updatedItems);
-        saveItems()
+        saveItems(updatedItems);
     };
 
     const handleClickDownItem = (index: number) => {
-        const updatedItems = [...items];
-        swapElement(updatedItems, index, index + 1);
-        setItems(updatedItems);
-        console.log(items)
-        saveItems()
+        const updatedItems = [...jsonData?.itemsData];
+        swapElement(updatedItems, index, index -+ 1);
+        saveItems(updatedItems);
     };
 
     const handleDeleteItem = (id: string) => {
-        if (items.length == 1) return;
-        setItems(items.filter(item => item.id !== id));
-        saveItems()
+        const currentItems = [...jsonData?.itemsData];
+        if (currentItems.length == 1) return;
+        const updatedSaveItems = currentItems.filter(item => item.id !== id)
+        saveItems(updatedSaveItems);
     };
 
     return (
         <div className="pb-40">
-            {items.map((item: Item, index: number) => (
+            {jsonData?.itemsData?.map((item: Item, index: number) => (
                 <ItemBox
-                    // itemsData={itemsData} setItemsData={setItemsData}
                     key={item.id}
                     onClickNewItem={handleClickNewItem}
                     onDeleteItem={() => handleDeleteItem(item.id)}

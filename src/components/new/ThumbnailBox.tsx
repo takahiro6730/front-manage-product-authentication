@@ -7,7 +7,10 @@ import styles from './blog.module.css';
 import { Range } from 'react-range';
 import Modal from "./Modal";
 
-const ThumbnailBox = ({jsonData, setJsonData}: any) => {
+import {useJsonData} from './BlogJsonDataContext';
+
+const ThumbnailBox = () => {
+    const { jsonData, setJsonData } = useJsonData();
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
     const [zoom, setZoom] = useState<number>(1);

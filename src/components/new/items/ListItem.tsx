@@ -1,9 +1,25 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./item.module.css";
+import { useJsonData } from "../BlogJsonDataContext";
 
-const ListItem: React.FC = () => {
+const ListItem = ({ item_id }: {item_id: string}) => {
+    const { jsonData, setJsonData } = useJsonData();
     const [items, setItems] = useState<string[]>(['']);
     const textAreaRefs = useRef<(HTMLTextAreaElement | null)[]>([]);
+
+    const saveJsonData = (items: any) => {
+        const itemsData = Array.isArray(jsonData?.itemsData) ? jsonData.itemsData : [];
+        const updatedJsonData = { ...jsonData, itemsData: [...itemsData] };
+        const targetIndex = updatedJsonData.itemsData.findIndex((item: any) => item.id === item_id);
+        if (targetIndex !== -1) {
+            const updatedItem = {
+                ...updatedJsonData.itemsData[targetIndex],
+                itemData: { ...updatedJsonData.itemsData[targetIndex].itemData, lists: items }
+            };
+            updatedJsonData.itemsData[targetIndex] = updatedItem;
+            setJsonData(updatedJsonData);
+        }
+    }
 
     const adjustHeight = (textarea: HTMLTextAreaElement) => {
         let tRows = textarea.textContent?.split(/\r|\r\n|\n/).length as number;
@@ -23,7 +39,6 @@ const ListItem: React.FC = () => {
             newItems.splice(index + 1, 0, '');
             setItems(newItems);
 
-            // Focus on the new textarea
             setTimeout(() => {
                 const nextTextarea = textAreaRefs.current[index + 1];
                 if (nextTextarea) {
@@ -38,6 +53,7 @@ const ListItem: React.FC = () => {
         const newItems = [...items];
         newItems[index] = event.target.value;
         setItems(newItems);
+        saveJsonData(newItems);
         adjustHeight(event.target);
     };
 

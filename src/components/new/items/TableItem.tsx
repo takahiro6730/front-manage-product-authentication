@@ -1,12 +1,33 @@
 import { useState, useRef, MouseEvent } from 'react';
 import styles from './item.module.css';
+import { useJsonData } from "../BlogJsonDataContext";
 
-const TableItem = () => {
+interface TableData {
+    [row: number]: { [col: number]: string };
+}
+
+const TableItem = ({item_id}: {item_id: string}) => {
+    const { jsonData, setJsonData } = useJsonData();
     const numRows = 8;
     const numCols = 8;
     const gridContainerRef = useRef<HTMLDivElement>(null);
     const [selectPanel, setSelectPanel] = useState(true);
     const [selectedDimensions, setSelectedDimensions] = useState({ rows: 0, cols: 0 });
+    const [tableData, setTableData] = useState<TableData>({});
+
+    const saveJsonData = (items: any) => {
+        const itemsData = Array.isArray(jsonData?.itemsData) ? jsonData.itemsData : [];
+        const updatedJsonData = { ...jsonData, itemsData: [...itemsData] };
+        const targetIndex = updatedJsonData.itemsData.findIndex((item: any) => item.id === item_id);
+        if (targetIndex !== -1) {
+            const updatedItem = {
+                ...updatedJsonData.itemsData[targetIndex],
+                itemData: { ...updatedJsonData.itemsData[targetIndex].itemData, lists: items }
+            };
+            updatedJsonData.itemsData[targetIndex] = updatedItem;
+            setJsonData(updatedJsonData);
+        }
+    }
 
     const highlightCells = (event: MouseEvent<HTMLDivElement>) => {
         const cells = Array.from(gridContainerRef.current?.children || []);
@@ -37,6 +58,20 @@ const TableItem = () => {
         setSelectPanel(false);
     };
 
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, rowIndex: number, colIndex: number) => {
+        const value = event.target.value;
+        setTableData((prevData) => {
+            const updatedData = { ...prevData };
+            if (!updatedData[rowIndex]) {
+                updatedData[rowIndex] = {};
+            }
+            updatedData[rowIndex][colIndex] = value;
+            return updatedData;
+        });
+        saveJsonData(tableData);
+
+    };
+
     return (
         <div>
             {selectPanel && (
@@ -64,6 +99,7 @@ const TableItem = () => {
                                         >
                                             <input
                                                 type="text"
+                                                onChange={(e) => handleInputChange(e, rowIndex, colIndex)}
                                                 className={`${ (rowIndex === 0 || colIndex === 0) ? 'bg-[#f5f6f9]' : '' } text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 outline-none`}
                                             />
                                         </td>
