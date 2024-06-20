@@ -4,14 +4,29 @@ import styles from "./blog.module.css"
 
 import ThumbnailBox from "./ThumbnailBox";
 import ItemGroup from "./ItemGroup";
+import  { saveData } from "@/utils/api";
+import { useRouter } from 'next/navigation';
 
 import { useJsonData, JsonDataProvider } from './BlogJsonDataContext';
 
 
 export const NewBlog = () => {
+    const router = useRouter();
     const { jsonData, setJsonData } = useJsonData();
-    const handlePublickClick = () => {
+    const handlePublickClick = async () => {
         console.log('pulbic--', jsonData);
+
+        const access_token = sessionStorage.getItem('access_token');
+        console.log(access_token);
+        const response = await saveData('blogs/save', jsonData, access_token);
+        
+        if (response.statusCode == 200) {
+            console.log(response);
+            router.push('/main');
+          } else {
+            console.log('ERROR LOGED IN');
+            console.log(response);
+          }
     }
 
     const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
