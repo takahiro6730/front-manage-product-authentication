@@ -17,7 +17,7 @@ export default function Signup() {
     e.preventDefault();
     console.log('Form submitted:', formData);
 
-    const response = await postRequest('v1/users', formData)
+    const response = await postRequest('users/signup', formData)
 
     if (response) {
       console.log(response);

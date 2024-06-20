@@ -1,8 +1,9 @@
 "use client"
 import React, { useState } from "react";
-import  { postRequest } from "@/utils/api"
+import  { postRequest } from "@/utils/api";
 import { useRouter } from 'next/navigation';
 import styles from "./login.module.css";
+import { useSession } from 'next-auth/react';
 
 
 const LogIn = () => {
@@ -18,9 +19,10 @@ const LogIn = () => {
 
     const response = await postRequest('auth/login', formData);
 
-    if (response.statusCode == 200) {
-      console.log('LOGED IN');
+    if (response.access_token) {
       console.log(response);
+      sessionStorage.setItem('access_token', response.access_token);
+      // sessionStorage.setItem('refresh_token', response.data.refresh_token);
       router.push('/main');
     } else {
       console.log('ERROR LOGED IN');

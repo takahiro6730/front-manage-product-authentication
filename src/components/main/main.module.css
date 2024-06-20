@@ -33,13 +33,16 @@
 .card-item-top {
     position: relative;
 }
+
 .card-item-top-img {
     width: 100%;
 }
+
 .card-item-top-img img{
     width: 100%;
     border-radius: 6px 6px 0 0;
 }
+
 .card-item-top-category {
     position: absolute;
     bottom: 0;
